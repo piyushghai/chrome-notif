@@ -9,6 +9,7 @@ function getNotificationId()
 
 function messageReceived(message)
 {
+  console.log(message);
 	var messageString = "";
  	 for (var key in message.data) 
  		{
@@ -22,6 +23,8 @@ function messageReceived(message)
   	title: 'Hike Message',
   	iconUrl: 'ic_launcher.png',
   	type: 'basic',
+    priority: 2,
+    buttons: [ {title: 'Send'} ],
   	message: messageString
   }, function() {});
 }
@@ -78,3 +81,25 @@ function registerResult(regId)
   chrome.storage.local.set({'registered': true});
   chrome.storage.local.set({'registrationId': registrationId});
 }
+
+function notificationBtnClick(notID, iBtn) {
+  console.log("The notification '" + notID + "' had button " + iBtn + " clicked");
+  chrome.windows.create({
+                        url: '/popup.html',
+                        type: 'popup',
+                        width: 100,
+                        height: 100,
+                        left: 100,
+                        top: 100
+                    }, function(window) {
+                        console.log("Here's the window obj");
+                        console.dir(window);
+                    });
+}
+
+window.addEventListener("load", function(){
+  console.log("Adding Listener Called");
+chrome.notifications.onButtonClicked.addListener(notificationBtnClick);
+});
+
+
