@@ -24,7 +24,7 @@ function messageReceived(message)
   	iconUrl: 'ic_launcher.png',
   	type: 'basic',
     priority: 2,
-    buttons: [ {title: 'Send'} ],
+    buttons: [ {title: 'Reply'} ],
   	message: messageString
   }, function() {});
 }
