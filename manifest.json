@@ -10,6 +10,12 @@
 		"default_icon": "ic_launcher.png",
 		"default_popup": "popup.html"
 	},
+
+	 "app": {
+    	"background": {
+      		"scripts": ["background.js"]
+    	}
+  	},
 	"sender_id": "940463892411",
 	"api_secret": "AIzaSyBKvmeF8j7mD5aU1YyPnPWkdnI8HDqT88k"
 }
