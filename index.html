@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hike</title>
+</head>
+<body>
+	<form id="msisdn-form" role="form">
+		<div class="form-group has-feedback">
+		    <label for="exampleInputEmail1">Enter phone number:</label>
+		    <input id="msisdn" type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+		    <i class="glyphicon glyphicon-user form-control-feedback"></i>
+	  	</div>
+		  <!-- <p class="help-block">Example block-level help text here.</p> -->
+		  <button type="button" id="msisdn-submit">Submit</button>  
+	</form>
+	<p id="status-text"></p>
+	<div id="pin-form" style="display:none;">
+		<form id="pin-form" role="form">
+			<div class="form-group has-feedback">
+			    <label for="pin-input">Now enter your pin, sent on your phone:</label>
+			    <input id="pin" type="text" class="form-control" id="pin-input" placeholder="">
+			    <i class="glyphicon glyphicon-user form-control-feedback"></i>
+		  	</div>
+			  <button type="button" id="pin-submit">Submit</button>
+		</form>
+	</div>
+	<script src="main.js"></script>
+	<script src="js/jquery-2.1.1.min.js"></script>
+</body>
+</html>
