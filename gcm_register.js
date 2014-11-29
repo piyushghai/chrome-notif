@@ -2,8 +2,7 @@ var registrationId = "";
 
 function register()
 {
-	var manifest = chrome.runtime.getManifest();
-	var sender_id = manifest.sender_id;
+	var sender_id = "940463892411";
 
 	chrome.gcm.register([sender_id], registerResult);
 	console.log("Registering with " + sender_id);
