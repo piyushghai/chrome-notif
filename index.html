@@ -8,24 +8,28 @@
 	<form id="msisdn-form" role="form">
 		<div class="form-group has-feedback">
 		    <label for="exampleInputEmail1">Enter phone number:</label>
-		    <input id="msisdn" type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+		    <input id="msisdn" type="text" class="form-control" id="exampleInputEmail1" placeholder="msisdn">
 		    <i class="glyphicon glyphicon-user form-control-feedback"></i>
 	  	</div>
+	  	<p></p>
 		  <!-- <p class="help-block">Example block-level help text here.</p> -->
 		  <button type="button" id="msisdn-submit">Submit</button>  
 	</form>
 	<p id="status-text"></p>
-	<div id="pin-form" style="display:none;">
+	<div id="pin-form" >
 		<form id="pin-form" role="form">
 			<div class="form-group has-feedback">
 			    <label for="pin-input">Now enter your pin, sent on your phone:</label>
-			    <input id="pin" type="text" class="form-control" id="pin-input" placeholder="">
+			    <input id="pin" type="text" class="form-control" id="pin-input" placeholder="pin">
 			    <i class="glyphicon glyphicon-user form-control-feedback"></i>
 		  	</div>
-			  <button type="button" id="pin-submit">Submit</button>
+			  <button type="button" id="pin-submit">Submit Pin</button>
 		</form>
+		<p></p>
 	</div>
-	<script src="main.js"></script>
+	<p id="pin-status-text"></p>
+	<button type="button" id="logout">Logout</button>
 	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="main.js"></script>
 </body>
 </html>

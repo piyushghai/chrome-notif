@@ -1,3 +1,11 @@
+$(document).ready(function() 
+{
+    chrome.storage.local.get('authentication', function(result)
+    {
+        refreshUI(result.authentication);
+    });
+    
+});
 
 function submitMsisdn() 
 {
@@ -15,18 +23,18 @@ function submitMsisdn()
                 chrome.storage.local.set({'msisdn': $('#msisdn').val()});
                 chrome.storage.local.set({'uid': msg.uid});
                 chrome.storage.local.set({'token': msg.token});
-                // window.open("www.google.com",'_blank');    
-                $("#status-text").text("Valid phone number");
-                $("#msisdn-form").hide();
-                $("#pin-form").show();
+                refreshUI(1);
+                chrome.storage.local.set({'authentication': 1});
             }
             else
             {
+                chrome.storage.local.set({'authentication': 0});
                 $("#status-text").text("Invalid phone number");
             }
         },
         error: function(err) {
             console.log(err);
+            chrome.storage.local.set({'authentication': 0});
             $("#status-text").text("Error sending request");
         }
     });
@@ -35,8 +43,7 @@ function submitMsisdn()
 
 function submitPin()
 {
-    console.log("fabjfbkafkja");
-    // chrome.storage.local.set({'': registrationId});
+    console.log("------Submitting pin-----");
     var gcm, uid, token, pin;
     chrome.storage.local.get('registrationId', function(result)
     {
@@ -53,12 +60,11 @@ function submitPin()
         token = result.token;
         console.log('get token: ', result.token);
 
-
-        pin = "1234";
-        var data = "{\"msisdn\": " + "\"+91" + $('#msisdn').val() + "\", \"gcm\":" + "\"" + gcm + "\""+ ", \"pin\":" +"\"" + pin + "\"" + "}";
-        var cookie = "user=" + token + "; UID=" + uid;
+        pin = $("#pin").val();
+        var data = "{\"gcm\":" + "\"" + gcm + "\""+ ", \"pin\":" +"\"" + pin + "\"";
+        var cookie = ", \"user\":" + "\"" + token + "\"" + ", \"uid\":" + "\""  + uid + "\"" + "}";
+        data = data + cookie;
         console.log("data = " + data);
-        console.log("cookie = " + cookie);
          var xhr = $.ajax({
             type: "POST",
             url: "http://staging.im.hike.in/v1/pin_validate", 
@@ -70,20 +76,58 @@ function submitPin()
                 if(msg.stat == "ok")
                 {
                     console.log("Pin validated.");
+                    chrome.storage.local.set({'authentication': 2});
+                    refreshUI(2);
                 }
                 else
                 {
-                    console.log("Pin not validated.");
+                    chrome.storage.local.set({'authentication': 1});
+                    $("#pin-status-text").text("Invalid Pin");
                 }
             },
             error: function(err) {
-                console.log("Error validating pin");
-                // $("#status-text").text("Error sending request");
+                chrome.storage.local.set({'authentication': 1});
+                console.log("Unauthorized, resposnse not received");
+                $("#pin-status-text").text("Error sending request");
             }
         });
         console.log("xhr = " + xhr); 
     });
 
+}
+
+function logout()
+{
+    console.log("Logging out");
+    chrome.storage.local.set({'authentication': 0});
+    refreshUI(0);
+}
+
+function refreshUI(val)
+{
+        if(val == 1)
+        {
+            console.log("authentication = 1");
+            $("#msisdn-form").hide();
+            $("#pin-form").show();
+            $("#logout").show();
+            $("#pin-status-text").text("");
+        }
+        else if(val == 2)
+        {
+            console.log("authentication = 2");
+            $("#msisdn-form").hide();
+            $("#pin-form").hide();
+            $("#logout").show();
+        }
+        else
+        {
+            console.log("authentication = 0");
+            $("#msisdn-form").show();
+            $("#pin-form").hide();
+            $("#logout").hide();
+            $("#pin-status-text").text("");
+        }
 }
 
 document.getElementById("msisdn-submit").addEventListener("click", function () {
@@ -93,6 +137,11 @@ document.getElementById("msisdn-submit").addEventListener("click", function () {
 document.getElementById("pin-submit").addEventListener("click", function () {
   submitPin();
 });
+
+document.getElementById("logout").addEventListener("click", function () {
+  logout();
+});
+
 
 // getting from sqlite
 // chrome.storage.local.get('uid', function(result)
