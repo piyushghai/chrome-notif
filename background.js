@@ -84,16 +84,17 @@ function registerResult(regId)
 
 function notificationBtnClick(notID, iBtn) {
   console.log("The notification '" + notID + "' had button " + iBtn + " clicked");
+
   chrome.windows.create({
-                        url: '/popup.html',
+                        url: '/reply.html',
                         type: 'popup',
-                        width: 100,
-                        height: 100,
-                        left: 100,
-                        top: 100
+                        width: 320,
+                        height: 390,
+                        focused: true,
+                        left: (screen.width - 350),
+                        top: (30)
                     }, function(window) {
                         console.log("Here's the window obj");
-                        console.dir(window);
                     });
 }
 
