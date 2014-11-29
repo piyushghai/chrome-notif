@@ -3,7 +3,7 @@
 	"version": "0.1",
 	"description": "Mirrors Hike notifications from phone to desktop",
 	"manifest_version": 2,
-	"permissions": ["gcm", "storage", "notifications"],
+	"permissions": ["gcm", "storage", "notifications", "background"],
 	"icons": {"128": "ic_launcher.png"},
 	"browser_action": {
 		"default_title": "Hike Messenger",
@@ -11,9 +11,8 @@
 		"default_popup": "popup.html"
 	},
 
-	 "app": {
     	"background": {
       		"scripts": ["background.js"]
     	}
-  	}
+  	
 }

@@ -1,5 +1,6 @@
-//Return a new notification ID, which is to be used in the notification.
+var registrationId = "";
 
+//Return a new notification ID, which is to be used in the notification.
 function getNotificationId()
 {
 	var id = Math.floor(Math.random() * 9007199254740992) + 1;
@@ -26,14 +27,21 @@ function messageReceived(message)
 }
 
 function firstTimeRegistration() {
+  
   chrome.storage.local.get("registered", function(result) {
     // If already registered, bail out.
+
     if (result["registered"])
-      return;
+
+      {
+        console.log("Inside registered");
+        return;
+      }
   	
   	else
-  	{
-  		//Trigger the register function from gcm_register.js	
+  	{   
+        console.log("Not registered yet");
+        register();
   	}
   });
 }
@@ -43,3 +51,30 @@ chrome.gcm.onMessage.addListener(messageReceived);
 // Set up listeners to trigger the first time registration.
 chrome.runtime.onInstalled.addListener(firstTimeRegistration);
 chrome.runtime.onStartup.addListener(firstTimeRegistration);
+
+
+
+// Code for registering with GCM begins here
+
+function register()
+{
+  var sender_id = "940463892411";
+  chrome.gcm.register([sender_id], registerResult);
+  console.log("Registering with " + sender_id);
+}
+
+function registerResult(regId)
+{
+  registrationId = regId;
+  console.log("GCM Registration Id " + registrationId);
+  if(chrome.runtime.lastError)
+  {
+    //If the registration fails, retry : 
+    console.log("Retrying registration");
+    register();
+    return;
+  }
+
+  chrome.storage.local.set({'registered': true});
+  chrome.storage.local.set({'registrationId': registrationId});
+}
