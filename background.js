@@ -19,14 +19,25 @@ function messageReceived(message)
   	 	}
   console.log("Message received: " + messageString);
 
-  chrome.notifications.create(getNotificationId(), {
+  var notificationId = getNotificationId();
+  chrome.notifications.create(notificationId, {
   	title: 'Hike Message',
   	iconUrl: 'ic_launcher.png',
   	type: 'basic',
     priority: 2,
     buttons: [ {title: 'Reply'} ],
   	message: messageString
-  }, function() {});
+  }, function(notificationId) {
+
+    if (chrome.runtime.lastError) {
+            // When the registration fails, handle the error and retry the registration later.
+            // See error codes here https://developer.chrome.com/extensions/cloudMessaging#error_reference
+            console.log("Fail to create the message: " + chrome.runtime.lastError.message);
+            return;
+        }
+  });
+
+   chrome.storage.local.set({notificationId: message.data});
 }
 
 function firstTimeRegistration() {
@@ -84,7 +95,7 @@ function registerResult(regId)
 
 function notificationBtnClick(notID, iBtn) {
   console.log("The notification '" + notID + "' had button " + iBtn + " clicked");
-
+  
   chrome.windows.create({
                         url: '/reply.html',
                         type: 'popup',
