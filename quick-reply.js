@@ -66,7 +66,7 @@ function sendMessage()
 	            if(msg.stat == "ok")
 	            {
 	                console.log("Message sent.");                   
-	                showPinValidatedNotif('Message sent. Yay!');
+	                showPinValidatedNotif('Message sent.');
 	            }
 	            else
 	            {
