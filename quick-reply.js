@@ -36,39 +36,50 @@ function fetchData(req, sender, sendResponse)
 
 function sendMessage()
 {
-	pin = $("#pin").val();
-	var time = $.now();
-    var message = $("#reply").val();
-    var fromTo = "{\"f\":" + "\"" + to + "\""+ ", \"to\":" +"\"" + fromPhone + "\"";
-    var md = ", \"md\":{\"sub\":\"desktop\"}";
-    var data = ", \"d\":{\"ts\":" + time + ", \"i\":" + time + ", \"hm\":" + "\"" + message + "\"}, \"t\":\"m\"}"
-    data = fromTo + md + data;
-    console.log("data = " + data);
-     var xhr = $.ajax({
-        type: "POST",
-        url: "http://staging.im.hike.in/v1/send_message", 
-        data: data,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(msg) {
-            console.log("Server response = " + $.param(msg));
-            if(msg.stat == "ok")
-            {
-                console.log("Message sent.");                   
-                showPinValidatedNotif('Message sent. Yay!');
-            }
-            else
-            {
-            	showPinValidatedNotif("Error while sending message");    
-            }
-        },
-        error: function(err) {
-        	showPinValidatedNotif("Error sending message");
-            console.log("Error sending request");
-        }
+	var uid, token;
+	chrome.storage.local.get('uid', function(result)
+    {
+        uid = result.uid;
+        console.log('get uid: ', result.uid);
     });
-    console.log("xhr = " + xhr); 
-
+    chrome.storage.local.get('token', function(result)
+    {
+        token = result.token;
+        console.log('get token: ', result.token);
+		pin = $("#pin").val();
+		var time = $.now();
+	    var message = $("#reply").val();
+	    var fromTo = "{\"f\":" + "\"" + to + "\""+ ", \"to\":" +"\"" + fromPhone + "\"";
+	    var md = ", \"md\":{\"sub\":\"desktop\"}";
+	    var data = ", \"d\":{\"ts\":" + time + ", \"i\":" + time + ", \"hm\":" + "\"" + message + "\"}, \"t\":\"m\"";
+	    var cookie = ", \"user\":" + "\"" + token + "\"" + ", \"uid\":" + "\""  + uid + "\"" + "}";
+	    data = fromTo + md + data + cookie;
+	    console.log("data = " + data);
+	     var xhr = $.ajax({
+	        type: "POST",
+	        url: "http://staging.im.hike.in/v1/send_message", 
+	        data: data,
+	        contentType: "application/json; charset=utf-8",
+	        dataType: "json",
+	        success: function(msg) {
+	            console.log("Server response = " + $.param(msg));
+	            if(msg.stat == "ok")
+	            {
+	                console.log("Message sent.");                   
+	                showPinValidatedNotif('Message sent. Yay!');
+	            }
+	            else
+	            {
+	            	showPinValidatedNotif("Error while sending message");    
+	            }
+	        },
+	        error: function(err) {
+	        	showPinValidatedNotif("Error sending message");
+	            console.log("Error sending request");
+	        }
+	    });
+	    console.log("xhr = " + xhr); 
+	});
        
 }
 
