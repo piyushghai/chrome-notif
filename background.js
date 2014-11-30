@@ -73,7 +73,8 @@ chrome.gcm.onMessage.addListener(messageReceived);
 // Set up listeners to trigger the first time registration.
 chrome.runtime.onInstalled.addListener(firstTimeRegistration);
 chrome.runtime.onStartup.addListener(firstTimeRegistration);
-
+chrome.notifications.onButtonClicked.addListener(notificationBtnClick);
+chrome.notifications.onClosed.addListener(notificationClosed);
 
 
 // Code for registering with GCM begins here
@@ -115,19 +116,25 @@ function notificationBtnClick(notID, iBtn) {
                     }, function(window) {
                         console.log("Here's the window obj");
                         chrome.runtime.sendMessage({details : getElementFromMap(notID)}, function(response){
-
+                         removeElementFromMap(notID);   
                         });
                         
                     });
 }
 
+function notificationClosed(notID, byUser)
+{
+  console.log("Notification closed : " + notID);
+  removeElementFromMap(notID);
+}
 function getElementFromMap(k)
 {
   console.log(notifDetailsMap[k]);
   return notifDetailsMap[k];
 }
 
-window.addEventListener("load", function(){
-  console.log("Adding Listener Called");
-chrome.notifications.onButtonClicked.addListener(notificationBtnClick);
-});
+function removeElementFromMap(k)
+{
+  console.log("Removing notification from map");
+  delete notifDetailsMap[k];
+}
