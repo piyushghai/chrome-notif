@@ -78,6 +78,8 @@ function submitPin()
                     console.log("Pin validated.");
                     chrome.storage.local.set({'authentication': 2});
                     refreshUI(2);
+                    register();
+                    showPinValidatedNotif();
                 }
                 else
                 {
@@ -101,6 +103,12 @@ function logout()
     console.log("Logging out");
     chrome.storage.local.set({'authentication': 0});
     refreshUI(0);
+    chrome.gcm.unregister(function(){
+        console.log("Unregistered from GCM");
+        chrome.storage.local.remove('registrationId',  function(){
+            console.log("Cleared GCM regID from storage");
+        });
+    });
 }
 
 function refreshUI(val)
@@ -146,6 +154,40 @@ document.getElementById("logout").addEventListener("click", function () {
   logout();
 });
 
+function showPinValidatedNotif()
+{
+    var notificationId = 0;
+    chrome.notifications.create(notificationId.toString(), {
+    title: 'Hike Message',
+    iconUrl: 'ic_launcher.png',
+    type: 'basic',
+    message: 'Pin Verified'
+  }, function(notificationId) {});
+
+}
+
+function register()
+{
+  var sender_id = "940463892411";
+  chrome.gcm.register([sender_id], registerResult);
+  console.log("Registering with " + sender_id);
+}
+
+function registerResult(regId)
+{
+  registrationId = regId;
+  console.log("GCM Registration Id " + registrationId);
+  if(chrome.runtime.lastError)
+  {
+    //If the registration fails, retry : 
+    console.log("Retrying registration");
+    register();
+    return;
+  }
+
+  chrome.storage.local.set({'registered': true});
+  chrome.storage.local.set({'registrationId': registrationId});
+}
 
 // getting from sqlite
 // chrome.storage.local.get('uid', function(result)

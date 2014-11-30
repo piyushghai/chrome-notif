@@ -10,27 +10,27 @@ function getNotificationId()
 
 function messageReceived(message)
 {
-  console.log(message);
 	var messageString = "";
- 	 for (var key in message.data) 
- 		{
-    		if (messageString != "")
-      			messageString += ", "
-    		messageString += key + ":" + message.data[key];
-  	 	}
-  console.log("Message received: " + messageString);
+  var jsonObj = JSON.parse(message.data['notify']);
+  console.log(jsonObj);
+  
+  var from = jsonObj['f'];
+  var to = jsonObj['to'];
+  var msg = jsonObj['d']['hm'];
+  var i = jsonObj['d']['i'];
+  var newDate = new Date();
 
-  console.log("Message,data "  + message.data['msg']);
-  var details = {};
-  details.message = message.data;
+  console.log("From : " + from + "To : " + to);
+  
   var notificationId = getNotificationId();
   chrome.notifications.create(notificationId, {
-  	title: 'Hike Message',
+  	title: from,
   	iconUrl: 'ic_launcher.png',
   	type: 'basic',
     priority: 2,
     buttons: [ {title: 'Reply'} ],
-  	message: messageString
+  	message: 'Message : ' + msg,
+    contextMessage: (newDate.getHours() + ' : ' + newDate.getMinutes())
   }, function(notificationId) {
 
     if (chrome.runtime.lastError) {
@@ -41,8 +41,7 @@ function messageReceived(message)
         }
 
         console.log(" notification" + notificationId);
-        console.log("Details : " + details.message['msg']);
-        notifDetailsMap[notificationId] = details;
+        notifDetailsMap[notificationId] = jsonObj;
         console.log("Printing Map : " + JSON.stringify(notifDetailsMap));
 
   });
@@ -124,7 +123,7 @@ function notificationBtnClick(notID, iBtn) {
 
 function getElementFromMap(k)
 {
-  console.log(notifDetailsMap[k].message['msg']);
+  console.log(notifDetailsMap[k]);
   return notifDetailsMap[k];
 }
 
