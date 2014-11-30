@@ -1,5 +1,7 @@
 var registrationId = "";
 
+var details = {};
+
 //Return a new notification ID, which is to be used in the notification.
 function getNotificationId()
 {
@@ -19,6 +21,8 @@ function messageReceived(message)
   	 	}
   console.log("Message received: " + messageString);
 
+  console.log("Message,data "  + message.data['msg']);
+  details.message = message.data;
   var notificationId = getNotificationId();
   chrome.notifications.create(notificationId, {
   	title: 'Hike Message',
@@ -106,6 +110,8 @@ function notificationBtnClick(notID, iBtn) {
                         top: (30)
                     }, function(window) {
                         console.log("Here's the window obj");
+                        chrome.runtime.sendMessage({details : details}, function(response){});
+
                     });
 }
 
