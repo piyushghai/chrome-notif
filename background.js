@@ -28,7 +28,7 @@ function messageReceived(message)
   	iconUrl: 'ic_launcher.png',
   	type: 'basic',
     priority: 2,
-    buttons: [ {title: 'Reply'} ],
+    buttons: [ {title: 'Reply', iconUrl: 'send.png'} ],
   	message: 'Message : ' + msg,
     contextMessage: (newDate.getHours() + ' : ' + newDate.getMinutes())
   }, function(notificationId) {
