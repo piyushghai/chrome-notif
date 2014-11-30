@@ -111,8 +111,8 @@ function notificationBtnClick(notID, iBtn) {
                         width: 320,
                         height: 390,
                         focused: true,
-                        left: (screen.width - 350),
-                        top: (30)
+                        left: (screen.width/2 - 160),
+                        top: (screen.height/2 - 195)
                     }, function(window) {
                         console.log("Here's the window obj");
                         chrome.runtime.sendMessage({details : getElementFromMap(notID)}, function(response){
