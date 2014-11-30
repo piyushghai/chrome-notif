@@ -1,7 +1,10 @@
 function show(details)
 {
-	var msg = details['msg'];
-	var fromPhone = details['sender'];
+	var fromPhone = details['f'];
+  	var to = details['to'];
+  	var msg = details['d']['hm'];
+  	var i = details['d']['i'];
+	
 	chrome.runtime.onMessage.removeListener(fetchData);
 	document.getElementById('container').style.display = 'block';
 	document.getElementById('image').src = '/ic_launcher.png';
@@ -14,8 +17,8 @@ function fetchData(req, sender, sendResponse)
 {
 	console.log("Adding listener");
   	if (req.details) {
-    	var details = req.details.message;
-    	show(details);
+    	var msgDetails = req.details;
+    	show(msgDetails);
   	}
 }
 //Adding message listener for updating UI
