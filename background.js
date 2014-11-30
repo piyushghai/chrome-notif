@@ -1,6 +1,5 @@
 var registrationId = "";
-
-var details = {};
+var notifDetailsMap = {};
 
 //Return a new notification ID, which is to be used in the notification.
 function getNotificationId()
@@ -22,6 +21,7 @@ function messageReceived(message)
   console.log("Message received: " + messageString);
 
   console.log("Message,data "  + message.data['msg']);
+  var details = {};
   details.message = message.data;
   var notificationId = getNotificationId();
   chrome.notifications.create(notificationId, {
@@ -39,9 +39,14 @@ function messageReceived(message)
             console.log("Fail to create the message: " + chrome.runtime.lastError.message);
             return;
         }
+
+        console.log(" notification" + notificationId);
+        console.log("Details : " + details.message['msg']);
+        notifDetailsMap[notificationId] = details;
+        console.log("Printing Map : " + JSON.stringify(notifDetailsMap));
+
   });
 
-   chrome.storage.local.set({notificationId: message.data});
 }
 
 function firstTimeRegistration() {
@@ -110,9 +115,17 @@ function notificationBtnClick(notID, iBtn) {
                         top: (30)
                     }, function(window) {
                         console.log("Here's the window obj");
-                        chrome.runtime.sendMessage({details : details}, function(response){});
+                        chrome.runtime.sendMessage({details : getElementFromMap(notID)}, function(response){
 
+                        });
+                        
                     });
+}
+
+function getElementFromMap(k)
+{
+  console.log(notifDetailsMap[k].message['msg']);
+  return notifDetailsMap[k];
 }
 
 window.addEventListener("load", function(){
