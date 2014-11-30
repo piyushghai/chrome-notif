@@ -3,33 +3,141 @@
 <head>
     <meta charset="utf-8">
     <title>Hike</title>
+    <link rel="stylesheet" type="text/css" href="base.css">
+   	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+   <style>
+
+    ::-webkit-scrollbar { 
+                display: none; 
+            }
+
+    body    {
+			  min-width: 300px; 
+			  min-height: 200px;
+			  max-width: 100%;
+			  position: relative;
+			  vertical-align:middle;
+			}
+
+    #header {
+                padding: 15px;
+                color: white;
+            }
+
+   #title   {
+                font-size: 19px;
+                margin: 7px 0;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+   #desc    {
+                opacity: 0.5;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+    #message {
+                background-color: #ecf0f0;
+                padding: 15px;
+                white-space: pre-wrap;
+                min-height: 120px;
+                max-height: 180px;
+                overflow: scroll;
+            }
+
+   #reply   {
+                padding: 15px;
+                height: 100px;
+                border: none;
+                resize: none;
+                outline: none;
+                display: block;
+                width: 100%;
+            }
+
+    #subtext, #pin-subtext, #welcome-text 
+		    {
+		    	font-size: 16px;
+		    	font-weight: bold;
+		    }
+
+	button 
+	{
+		    cursor: pointer;
+		    font-weight: bold;
+		    color: white;
+		    font-size: 12px;
+		    background-color: #0f8fe1;
+		    padding: 7px 10px;
+		    border-radius: 2px;
+		    overflow: hidden;
+		    border: 0;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    text-overflow: ellipsis;
+	}
+	button:focus, button:hover {
+	    background-color: #0f9ff3;
+	}
+	button:active {
+	    background-color: #0f8ff3;
+	}
+   </style>
 </head>
-<body>
-	<form id="msisdn-form" role="form">
-		<div class="form-group has-feedback">
-		    <label for="exampleInputEmail1">Enter phone number:</label>
-		    <input id="msisdn" type="text" class="form-control" id="exampleInputEmail1" placeholder="msisdn">
-		    <i class="glyphicon glyphicon-user form-control-feedback"></i>
-	  	</div>
-	  	<p></p>
-		  <!-- <p class="help-block">Example block-level help text here.</p> -->
-		  <button type="button" id="msisdn-submit">Submit</button>  
-	</form>
-	<p id="status-text"></p>
-	<div id="pin-form" >
-		<form id="pin-form" role="form">
-			<div class="form-group has-feedback">
-			    <label for="pin-input">Now enter your pin, sent on your phone:</label>
-			    <input id="pin" type="text" class="form-control" id="pin-input" placeholder="pin">
-			    <i class="glyphicon glyphicon-user form-control-feedback"></i>
-		  	</div>
-			  <button type="button" id="pin-submit">Submit Pin</button>
-		</form>
-		<p></p>
+
+	<div id="header"> 
+        <div id="image-holder" style="float:left; padding:2px; display: inline-block;">
+          <img id="image" style="display:block;height:64px;width:64px;" src="ic_launcher.png">
+        </div>
+        <div style="float: left; padding-left: 12px;">
+            <div id="title">
+            </div>
+            <div id="desc">
+            </div>
+        </div>
+        <input type="image" onclick="image" id="logout" style="display:block;height:16px;width:16px;margin-left:250px" src="glyphicons-21-home.png">
 	</div>
-	<p id="pin-status-text"></p>
-	<button type="button" id="logout">Logout</button>
-	<script src="js/jquery-2.1.1.min.js"></script>
-	<script src="main.js"></script>
-</body>
+
+	<body>	
+		<label id="welcome-text" style="padding-left:110px;padding-top:40px">Welcome!</label>
+			    
+		<form id="msisdn-form" role="form" style="padding-left:16px"> 
+			<div class="form-group has-feedback" >
+				<br>
+			    <label id="subtext" for="exampleInputEmail1">Hi! What's your number?</label>
+			    <br> 
+			    <span class="glyphicons glyphicons-log-out"></span>
+			    <div style="padding-top:16px">
+			    	<input id="msisdn" style="height:30px;" type="text"  id="exampleInputEmail1" placeholder="">
+				    <button type="button" style="margin-left:5px" id="msisdn-submit">Submit</button>  
+				</div>
+		  	</div>
+		  	<p></p>
+			  <!-- <p class="help-block">Example block-level help text here.</p> -->
+			<p id="status-text" style="font-size:10px;color:#ef554e" ></p>
+		</form> 
+
+		
+		<div id="pin-form" style="padding-left:16px">
+			<form id="pin-form" role="form">
+				<div class="form-group has-feedback">
+					<br>
+				    <label id="pin-subtext" for="pin-input">We've sent a pin on your phone.</label>
+				    <br>
+				    <div style="padding-top:16px">
+				    	<input id="pin" type="text" style="height:30px" id="pin-input" placeholder="">
+				    	<button type="button" style="margin-left:5px" id="pin-submit">Done</button>
+				    </div>
+			  	</div>
+				  
+			</form>
+			<p></p>
+			<p id="pin-status-text" style="font-size:10px;color:#ef554e"></p>
+		</div>
+		<script src="js/jquery-2.1.1.min.js"></script>
+		<script src="main.js"></script>
+	</body>
 </html>

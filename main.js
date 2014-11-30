@@ -29,13 +29,13 @@ function submitMsisdn()
             else
             {
                 chrome.storage.local.set({'authentication': 0});
-                $("#status-text").text("Invalid phone number");
+                $("#status-text").text("*Invalid phone number");
             }
         },
         error: function(err) {
             console.log(err);
             chrome.storage.local.set({'authentication': 0});
-            $("#status-text").text("Error sending request");
+            $("#status-text").text("*Error sending request");
         }
     });
     console.log("xhr = " + xhr); 
@@ -82,13 +82,13 @@ function submitPin()
                 else
                 {
                     chrome.storage.local.set({'authentication': 1});
-                    $("#pin-status-text").text("Invalid Pin");
+                    $("#pin-status-text").text("*Invalid Pin");
                 }
             },
             error: function(err) {
                 chrome.storage.local.set({'authentication': 1});
                 console.log("Unauthorized, resposnse not received");
-                $("#pin-status-text").text("Error sending request");
+                $("#pin-status-text").text("*Error sending request");
             }
         });
         console.log("xhr = " + xhr); 
@@ -112,6 +112,7 @@ function refreshUI(val)
             $("#pin-form").show();
             $("#logout").show();
             $("#pin-status-text").text("");
+            $("#welcome-text").hide();
         }
         else if(val == 2)
         {
@@ -119,6 +120,7 @@ function refreshUI(val)
             $("#msisdn-form").hide();
             $("#pin-form").hide();
             $("#logout").show();
+            $("#welcome-text").show();
         }
         else
         {
@@ -127,6 +129,8 @@ function refreshUI(val)
             $("#pin-form").hide();
             $("#logout").hide();
             $("#pin-status-text").text("");
+            $("#status-text").text("");
+            $("#welcome-text").hide();
         }
 }
 
@@ -145,6 +149,6 @@ document.getElementById("logout").addEventListener("click", function () {
 
 // getting from sqlite
 // chrome.storage.local.get('uid', function(result)
-            // {
-            //         console.debug('result: ', result.uid);
-            // });
+// {
+//         console.debug('result: ', result.uid);
+// });
